@@ -455,6 +455,192 @@
   }
 
   .config-row .form-group { margin-bottom: 0; flex: 1; min-width: 200px; }
+
+  /* ── PASSKEY BUTTON ── */
+  .btn-passkey {
+    background: linear-gradient(135deg, #1a1a35 0%, #23233a 100%);
+    color: #a78bfa;
+    border: 1px solid #4c3a8a;
+    font-size: .875rem;
+    padding: .7rem 1.2rem;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .6rem;
+    width: 100%;
+    transition: all .2s;
+    font-weight: 700;
+    letter-spacing: .02em;
+  }
+  .btn-passkey:hover {
+    background: linear-gradient(135deg, #23233a 0%, #2d1b6b 100%);
+    border-color: #7c5fe0;
+    box-shadow: 0 0 16px rgba(124,95,224,.25);
+    color: #c4b5fd;
+  }
+  .btn-passkey:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+  }
+  .btn-passkey svg {
+    flex-shrink: 0;
+  }
+
+  .btn-passkey-sm {
+    background: transparent;
+    color: #a78bfa;
+    border: 1px solid #4c3a8a;
+    font-size: .78rem;
+    padding: .35rem .8rem;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    transition: all .15s;
+  }
+  .btn-passkey-sm:hover {
+    background: #1a1a35;
+    border-color: #7c5fe0;
+  }
+
+  /* ── LLAVES DE ACCESO ── */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    margin: 1.5rem 0;
+    color: var(--muted);
+    font-size: .75rem;
+    font-family: 'DM Mono', monospace;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .keys-section {
+    margin-bottom: 1.25rem;
+  }
+
+  .keys-label {
+    font-size: .72rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    font-family: 'DM Mono', monospace;
+    margin-bottom: .5rem;
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+  }
+
+  .keys-label svg { opacity: .6; }
+
+  .keys-list {
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+  }
+
+  .key-item {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: .5rem .75rem;
+    cursor: pointer;
+    transition: border-color .15s, background .15s;
+  }
+
+  .key-item:hover {
+    border-color: var(--red);
+    background: #1a1117;
+  }
+
+  .key-icon {
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  .key-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .key-name {
+    font-size: .85rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .key-url {
+    font-size: .72rem;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .key-delete {
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-size: .9rem;
+    padding: .2rem .35rem;
+    border-radius: 5px;
+    line-height: 1;
+    flex-shrink: 0;
+    transition: color .15s, background .15s;
+  }
+
+  .key-delete:hover {
+    color: var(--red);
+    background: var(--red-dim);
+  }
+
+  .save-key-row {
+    display: flex;
+    gap: .5rem;
+    margin-top: .75rem;
+    align-items: center;
+  }
+
+  .save-key-row input {
+    flex: 1;
+    font-size: .8rem;
+    padding: .45rem .75rem;
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    font-size: .78rem;
+    padding: .45rem .9rem;
+    flex-shrink: 0;
+  }
+
+  .btn-ghost:hover {
+    color: var(--text);
+    border-color: var(--muted);
+  }
+
+  .no-keys {
+    font-size: .78rem;
+    color: var(--muted);
+    font-style: italic;
+    text-align: center;
+    padding: .6rem;
+    font-family: 'DM Mono', monospace;
+  }
 </style>
 </head>
 <body>
@@ -469,15 +655,31 @@
       <div class="api-status-dot" id="api-dot"></div>
       <span id="api-label">comprobando API...</span>
     </div>
+    <button class="btn-passkey-sm" id="btn-passkey-register" style="display:none" onclick="passkeyRegister()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+      Registrar Passkey
+    </button>
     <button class="btn-secondary btn-sm" id="btn-logout" style="display:none" onclick="logout()">Cerrar sesión</button>
   </div>
 </header>
 
 <!-- LOGIN -->
 <div id="login-screen">
-  <div class="login-card">
+  <div class="login-card" style="max-width:460px">
     <h2>Acceso al panel</h2>
-    <p>Ingresá la clave de administrador para gestionar las licencias.</p>
+    <p>Ingresá la URL de la API y autentícate.</p>
+
+    <!-- Llaves de acceso guardadas -->
+    <div class="keys-section" id="keys-section">
+      <div class="keys-label">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+        Llaves guardadas
+      </div>
+      <div class="keys-list" id="keys-list"></div>
+    </div>
+
+    <div class="divider">o ingresá manualmente</div>
+
     <div class="config-row" style="margin-bottom:0">
       <div class="form-group" style="flex:1">
         <label>URL de la API</label>
@@ -485,12 +687,29 @@
       </div>
     </div>
     <br>
+
+    <!-- Passkey -->
+    <button class="btn-passkey" id="btn-passkey-login" onclick="passkeyLogin()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      Entrar con Passkey
+      <span style="font-size:.72rem;opacity:.6;font-weight:400">(Google, Windows Hello, Samsung...)</span>
+    </button>
+
+    <div class="divider" style="margin:1rem 0">o usá tu clave</div>
+
     <div class="form-group">
       <label>Clave de administrador</label>
       <input type="password" id="login-key" placeholder="••••••••••••••••" onkeydown="if(event.key==='Enter')login()">
     </div>
+
+    <!-- Guardar como llave -->
+    <div class="save-key-row">
+      <input type="text" id="key-name" placeholder="Nombre para guardar (ej: Mi servidor)" style="font-size:.8rem">
+      <button class="btn-ghost" onclick="saveKey()" title="Guardar llave de acceso">💾 Guardar llave</button>
+    </div>
+
     <br>
-    <button class="btn-primary" style="width:100%" onclick="login()">Entrar</button>
+    <button class="btn-primary" style="width:100%" id="btn-login" onclick="login()">Entrar con Clave</button>
     <div id="login-error" style="color:var(--red);font-size:.8rem;margin-top:.75rem;display:none"></div>
   </div>
 </div>
@@ -646,15 +865,103 @@ async function apiFetch(path, opts = {}) {
   return res.json();
 }
 
+// ── LLAVES DE ACCESO ──────────────────────────────────────────────────────
+
+function getKeys() {
+  try { return JSON.parse(localStorage.getItem('arm_keys') || '[]'); }
+  catch { return []; }
+}
+
+function saveKeys(keys) {
+  localStorage.setItem('arm_keys', JSON.stringify(keys));
+}
+
+function renderKeys() {
+  const keys = getKeys();
+  const list = document.getElementById('keys-list');
+  const section = document.getElementById('keys-section');
+
+  if (!keys.length) {
+    list.innerHTML = `<div class="no-keys">No hay llaves guardadas aún</div>`;
+    section.style.display = 'block';
+    return;
+  }
+
+  section.style.display = 'block';
+  list.innerHTML = keys.map((k, i) => `
+    <div class="key-item" onclick="applyKey(${i})">
+      <span class="key-icon">🗝️</span>
+      <div class="key-info">
+        <div class="key-name">${escapeHtml(k.name)}</div>
+        <div class="key-url">${escapeHtml(k.url)}</div>
+      </div>
+      <button class="key-delete" onclick="deleteKey(event, ${i})" title="Eliminar llave">✕</button>
+    </div>
+  `).join('');
+}
+
+function escapeHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function applyKey(index) {
+  const keys = getKeys();
+  const k = keys[index];
+  if (!k) return;
+  document.getElementById('login-url').value = k.url;
+  document.getElementById('login-key').value = k.key;
+  document.getElementById('key-name').value  = k.name;
+  // Auto-login inmediato
+  login();
+}
+
+function deleteKey(event, index) {
+  event.stopPropagation();
+  const keys = getKeys();
+  const name = keys[index]?.name || 'esta llave';
+  if (!confirm(`¿Eliminar la llave "${name}"?`)) return;
+  keys.splice(index, 1);
+  saveKeys(keys);
+  renderKeys();
+  toast('Llave eliminada.');
+}
+
+function saveKey() {
+  const url  = document.getElementById('login-url').value.trim();
+  const key  = document.getElementById('login-key').value.trim();
+  const name = document.getElementById('key-name').value.trim();
+
+  if (!url || !key)  { toast('Completá URL y Clave antes de guardar.', false); return; }
+  if (!name)         { toast('Poné un nombre para la llave.', false); return; }
+
+  const keys = getKeys();
+  // Actualizar si ya existe el mismo nombre
+  const existing = keys.findIndex(k => k.name === name);
+  if (existing >= 0) {
+    keys[existing] = { name, url, key };
+    toast(`Llave "${name}" actualizada.`);
+  } else {
+    keys.push({ name, url, key });
+    toast(`Llave "${name}" guardada. 🗝️`);
+  }
+  saveKeys(keys);
+  renderKeys();
+  document.getElementById('key-name').value = '';
+}
+
 // ── AUTH ──────────────────────────────────────────────────────────────────
 
 async function login() {
-  const url = document.getElementById('login-url').value.trim();
-  const key = document.getElementById('login-key').value.trim();
+  const url   = document.getElementById('login-url').value.trim();
+  const key   = document.getElementById('login-key').value.trim();
   const errEl = document.getElementById('login-error');
+  const btn   = document.getElementById('btn-login');
   errEl.style.display = 'none';
 
   if (!url || !key) { errEl.textContent = 'Completá los dos campos.'; errEl.style.display = 'block'; return; }
+
+  btn.textContent = 'Verificando...';
+  btn.disabled = true;
 
   API_URL = url;
   API_KEY = key;
@@ -667,6 +974,9 @@ async function login() {
   } catch (e) {
     errEl.textContent = 'Clave incorrecta o URL inválida.';
     errEl.style.display = 'block';
+  } finally {
+    btn.textContent = 'Entrar';
+    btn.disabled = false;
   }
 }
 
@@ -675,6 +985,7 @@ function logout() {
   document.getElementById('app').style.display = 'none';
   document.getElementById('login-screen').style.display = 'flex';
   document.getElementById('btn-logout').style.display = 'none';
+  document.getElementById('btn-passkey-register').style.display = 'none';
 }
 
 // ── APP ───────────────────────────────────────────────────────────────────
@@ -683,6 +994,9 @@ async function showApp() {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
   document.getElementById('btn-logout').style.display = 'block';
+  if (window.PublicKeyCredential) {
+    document.getElementById('btn-passkey-register').style.display = 'flex';
+  }
   await loadLicencias();
   checkApiStatus();
 }
@@ -842,6 +1156,13 @@ document.getElementById('modal').addEventListener('click', e => {
 
 // ── INIT ──────────────────────────────────────────────────────────────────
 window.addEventListener('load', () => {
+  renderKeys(); // Mostrar llaves guardadas
+
+  // Ocultar botón passkey si el browser no lo soporta
+  if (!window.PublicKeyCredential) {
+    document.getElementById('btn-passkey-login').style.display = 'none';
+  }
+
   const savedUrl = localStorage.getItem('arm_url');
   const savedKey = localStorage.getItem('arm_key');
   if (savedUrl && savedKey) {
@@ -852,6 +1173,165 @@ window.addEventListener('load', () => {
     showApp();
   }
 });
+
+// ── PASSKEY (WebAuthn) ────────────────────────────────────────────────────
+
+function b64urlToBuffer(b64url) {
+  const padding = '='.repeat((4 - b64url.length % 4) % 4);
+  const b64 = (b64url + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const raw = atob(b64);
+  return Uint8Array.from(raw, c => c.charCodeAt(0)).buffer;
+}
+
+function bufferToB64url(buffer) {
+  const bytes = new Uint8Array(buffer);
+  let str = '';
+  for (const b of bytes) str += String.fromCharCode(b);
+  return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+}
+
+async function passkeyLogin() {
+  const url = document.getElementById('login-url').value.trim();
+  const errEl = document.getElementById('login-error');
+  errEl.style.display = 'none';
+
+  if (!url) {
+    errEl.textContent = 'Ingresá la URL de la API primero.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  const btn = document.getElementById('btn-passkey-login');
+  btn.disabled = true;
+  btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg> Esperando...`;
+
+  try {
+    // 1. Obtener opciones de autenticación
+    const beginRes = await fetch(url.replace(/\/$/, '') + '/admin/webauthn/authenticate/begin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    if (!beginRes.ok) {
+      const err = await beginRes.json().catch(() => ({ detail: beginRes.statusText }));
+      throw new Error(err.detail || 'Error al obtener opciones');
+    }
+    const opts = await beginRes.json();
+    const challengeB64 = opts.challenge;
+
+    // 2. Transformar para el browser
+    opts.challenge = b64urlToBuffer(opts.challenge);
+    if (opts.allowCredentials) {
+      opts.allowCredentials = opts.allowCredentials.map(c => ({ ...c, id: b64urlToBuffer(c.id) }));
+    }
+
+    // 3. Invocar al autenticador del SO
+    let assertion;
+    try {
+      assertion = await navigator.credentials.get({ publicKey: opts });
+    } catch (e) {
+      if (e.name === 'NotAllowedError') throw new Error('Autenticación cancelada.');
+      throw e;
+    }
+
+    // 4. Enviar al servidor
+    const assertionData = {
+      id:        assertion.id,
+      rawId:     bufferToB64url(assertion.rawId),
+      response: {
+        clientDataJSON:    bufferToB64url(assertion.response.clientDataJSON),
+        authenticatorData: bufferToB64url(assertion.response.authenticatorData),
+        signature:         bufferToB64url(assertion.response.signature),
+        userHandle:        assertion.response.userHandle ? bufferToB64url(assertion.response.userHandle) : null,
+      },
+      type:      assertion.type,
+      challenge: challengeB64,
+    };
+
+    const completeRes = await fetch(url.replace(/\/$/, '') + '/admin/webauthn/authenticate/complete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(assertionData),
+    });
+    if (!completeRes.ok) {
+      const err = await completeRes.json().catch(() => ({ detail: completeRes.statusText }));
+      throw new Error(err.detail || 'Verificación falló');
+    }
+    const result = await completeRes.json();
+
+    // 5. Login exitoso
+    API_URL = url;
+    API_KEY = result.api_key;
+    localStorage.setItem('arm_url', url);
+    localStorage.setItem('arm_key', result.api_key);
+    showApp();
+    toast('✅ Autenticado con Passkey');
+
+  } catch (e) {
+    errEl.textContent = '🔐 ' + (e.message || 'Error de Passkey');
+    errEl.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Entrar con Passkey <span style="font-size:.72rem;opacity:.6;font-weight:400">(Google, Windows Hello, Samsung...)</span>`;
+  }
+}
+
+async function passkeyRegister() {
+  if (!confirm('\u00bfRegistrar una Passkey en este dispositivo?\nPodrás usar huella, Face ID, PIN o Google/Windows Hello para entrar.')) return;
+
+  const btn = document.getElementById('btn-passkey-register');
+  btn.textContent = '\u23f3 Registrando...';
+  btn.disabled = true;
+
+  try {
+    // 1. Obtener opciones (requiere API key)
+    const opts = await apiFetch('/admin/webauthn/register/begin');
+    const challengeB64 = opts.challenge;
+
+    // 2. Transformar para el browser
+    opts.challenge = b64urlToBuffer(opts.challenge);
+    opts.user.id   = b64urlToBuffer(opts.user.id);
+    if (opts.excludeCredentials) {
+      opts.excludeCredentials = opts.excludeCredentials.map(c => ({ ...c, id: b64urlToBuffer(c.id) }));
+    }
+
+    // 3. Crear credencial
+    let credential;
+    try {
+      credential = await navigator.credentials.create({ publicKey: opts });
+    } catch (e) {
+      if (e.name === 'NotAllowedError') throw new Error('Registro cancelado.');
+      throw e;
+    }
+
+    const transports = credential.response.getTransports ? credential.response.getTransports() : [];
+
+    // 4. Enviar al servidor
+    const credData = {
+      id:        credential.id,
+      rawId:     bufferToB64url(credential.rawId),
+      response: {
+        clientDataJSON:    bufferToB64url(credential.response.clientDataJSON),
+        attestationObject: bufferToB64url(credential.response.attestationObject),
+        transports,
+      },
+      type:      credential.type,
+      challenge: challengeB64,
+    };
+
+    await apiFetch('/admin/webauthn/register/complete', {
+      method: 'POST',
+      body: JSON.stringify(credData),
+    });
+
+    toast('🔐 Passkey registrada exitosamente! Ya podés usarla para entrar.');
+
+  } catch (e) {
+    toast('Error al registrar Passkey: ' + e.message, false);
+  } finally {
+    btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg> Registrar Passkey`;
+    btn.disabled = false;
+  }
+}
 </script>
 </body>
 </html>
