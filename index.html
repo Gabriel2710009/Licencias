@@ -682,8 +682,9 @@
 
     <div class="config-row" style="margin-bottom:0">
       <div class="form-group" style="flex:1">
-        <label>URL de la API</label>
-        <input type="text" id="login-url" placeholder="https://tu-api.railway.app">
+        <label>Servidor</label>
+        <div class="mono" id="login-server" style="padding:.85rem 1rem;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:rgba(255,255,255,.04);color:var(--text);word-break:break-all">https://licencias-bot-de-armario.onrender.com</div>
+        <input type="hidden" id="login-url" value="https://licencias-bot-de-armario.onrender.com">
       </div>
     </div>
     <br>
@@ -821,7 +822,7 @@
 
 <script>
 // ── STATE ──────────────────────────────────────────────────────────────────
-let API_URL  = '';
+const API_URL = 'https://licencias-bot-de-armario.onrender.com';
 let API_KEY  = '';
 let licencias = [];
 let editingGuildId = null;
@@ -893,7 +894,7 @@ function renderKeys() {
       <span class="key-icon">🗝️</span>
       <div class="key-info">
         <div class="key-name">${escapeHtml(k.name)}</div>
-        <div class="key-url">${escapeHtml(k.url)}</div>
+        <div class="key-url">https://licencias-bot-de-armario.onrender.com</div>
       </div>
       <button class="key-delete" onclick="deleteKey(event, ${i})" title="Eliminar llave">✕</button>
     </div>
@@ -908,7 +909,6 @@ function applyKey(index) {
   const keys = getKeys();
   const k = keys[index];
   if (!k) return;
-  document.getElementById('login-url').value = k.url;
   document.getElementById('login-key').value = k.key;
   document.getElementById('key-name').value  = k.name;
   // Auto-login inmediato
@@ -963,12 +963,10 @@ async function login() {
   btn.textContent = 'Verificando...';
   btn.disabled = true;
 
-  API_URL = url;
   API_KEY = key;
 
   try {
     await apiFetch('/admin/licencias');
-    localStorage.setItem('arm_url', url);
     localStorage.setItem('arm_key', key);
     showApp();
   } catch (e) {
@@ -1163,12 +1161,9 @@ window.addEventListener('load', () => {
     document.getElementById('btn-passkey-login').style.display = 'none';
   }
 
-  const savedUrl = localStorage.getItem('arm_url');
   const savedKey = localStorage.getItem('arm_key');
-  if (savedUrl && savedKey) {
-    document.getElementById('login-url').value = savedUrl;
+  if (savedKey) {
     document.getElementById('login-key').value = savedKey;
-    API_URL = savedUrl;
     API_KEY = savedKey;
     showApp();
   }
@@ -1259,9 +1254,7 @@ async function passkeyLogin() {
     const result = await completeRes.json();
 
     // 5. Login exitoso
-    API_URL = url;
     API_KEY = result.api_key;
-    localStorage.setItem('arm_url', url);
     localStorage.setItem('arm_key', result.api_key);
     showApp();
     toast('✅ Autenticado con Passkey');
